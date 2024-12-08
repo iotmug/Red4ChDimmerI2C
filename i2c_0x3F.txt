@@ -1,0 +1,64 @@
+// IOTMUG I2C AC Light Dimmer www.iotmug.com
+//
+// I2C Protocol -> first byte - device address
+//                 second byte - channel select
+//                 third byte - dimming value
+//
+// Device address -> 0x27, 0x26, 0x25, 0x24, 0x23, 0x22, 0x21, 0x20
+// Device address -> 0x3F, 0x3E, 0x3D, 0x3C, 0x3B, 0x3A, 0x39, 0x38
+//
+// Channels -> 0x80 1st channel
+//             0x81 2nd channel
+//             0x82 3rd channel
+//             0x83 4th channel
+//
+// Dimming value range 0...100 
+//                     0 - Fully ON
+//                     100 - Fully OFF
+//
+
+
+#include <Wire.h>
+
+#define ADDR 0x3F
+
+int FAST, value1, value2, value3;
+
+unsigned i=0;
+
+void setup() {
+
+  Wire.begin(); 
+
+  FAST=750; // delay in ms (milliseconds)
+}
+
+ 
+void loop() {
+
+      Wire.beginTransmission(ADDR); // device address
+      Wire.write(0x80);             // select 1st channel   
+      Wire.write(10);               // write dimm value "10" to 1st channel
+      Wire.write(0x81);             // select 2st channel   
+      Wire.write(60);               // write dimm value "60" to 2st channel
+      Wire.write(0x82);             // select 3rd channel   
+      Wire.write(10);               // write dimm value "10" to 3rd channel
+      Wire.write(0x83);             // select 4th channel   
+      Wire.write(60);               // write dimm value "60" to 4th channel
+      Wire.endTransmission();  
+      delay(FAST);
+
+      Wire.beginTransmission(ADDR); // device address
+      Wire.write(0x80);             // select 1st channel   
+      Wire.write(60);               // write dimm value "60" to 1st channel
+      Wire.write(0x81);             // select 2st channel   
+      Wire.write(10);               // write dimm value "10" to 2st channel
+      Wire.write(0x82);             // select 3rd channel   
+      Wire.write(60);               // write dimm value "60" to 3rd channel
+      Wire.write(0x83);             // select 4th channel   
+      Wire.write(10);               // write dimm value "10" to 4th channel
+      Wire.endTransmission();  
+      delay(FAST);   
+       
+}
+
